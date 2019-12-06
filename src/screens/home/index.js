@@ -14,7 +14,7 @@ class Home extends Component {
             this.props.addNotification({
               message: "My message",
               type: "warn",
-              timeInterval: 1000
+              timeInterval: 5000
             })
           }
         >

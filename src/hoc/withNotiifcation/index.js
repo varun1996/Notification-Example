@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import Notification from "./Notification";
 import "./withNotification.css";
 
-const withNotification = params => {
+const withNotification = (NotificationComponent = Notification) => {
   return WrappedComponent => {
     return class WithNotification extends Component {
       constructor(props) {
@@ -11,13 +12,14 @@ const withNotification = params => {
         };
         this.addNotification = this.addNotification.bind(this);
         this.onCloseNotification = this.onCloseNotification.bind(this);
+        this.intervalIDs = {};
       }
 
       addNotification(payload) {
         const notificationId = +new Date();
         if (typeof payload.timeInterval == "number") {
           console.log(payload.timeInterval);
-          setTimeout(() => {
+          this.intervalIDs[notificationId] = setTimeout(() => {
             this.onCloseNotification(notificationId);
           }, payload.timeInterval);
         }
@@ -31,6 +33,10 @@ const withNotification = params => {
       }
 
       onCloseNotification(id) {
+        if (this.intervalIDs[id]) {
+          clearTimeout(this.intervalIDs[id]);
+          delete this.intervalIDs[id];
+        }
         this.setState(({ notifications }) => ({
           notifications: notifications.filter(
             notification => notification.id !== id
@@ -57,8 +63,7 @@ const withNotification = params => {
                     >
                       close
                     </button>
-                    <span> {type}</span>
-                    <span> {message}</span>
+                    <NotificationComponent message={message} type={type} />
                   </div>
                 );
               })}
