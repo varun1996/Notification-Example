@@ -7,23 +7,26 @@ const withNotification = params => {
       constructor(props) {
         super(props);
         this.state = {
-          notifications: [{ message: "something here", type: "warn" }]
+          notifications: []
         };
         this.addNotification = this.addNotification.bind(this);
+        this.onCloseNotification = this.onCloseNotification.bind(this);
       }
 
       addNotification(message) {
         const { notifications } = this.state;
         this.setState(({ notifications }) => ({
-          notifications: notifications.concat(message)
+          notifications: notifications.concat({ ...message, id: +new Date() })
         }));
       }
 
-      onCloseNotification() {
+      onCloseNotification(id) {
         const { notifications } = this.state;
 
         this.setState({
-          notifications: notifications.splice(notifications.length - 1, 1)
+          notifications: notifications.filter(
+            notification => notification.id !== id
+          )
         });
       }
 
@@ -36,12 +39,12 @@ const withNotification = params => {
               addNotification={this.addNotification}
             />
             <div className="notification-container">
-              {notifications.map(({ message, type }) => {
+              {notifications.map(({ message, type, id }) => {
                 return (
                   <div className="notification">
                     <button
                       onClick={() => {
-                        console.log("close is being fired");
+                        this.onCloseNotification(id);
                       }}
                     >
                       close
