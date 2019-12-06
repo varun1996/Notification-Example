@@ -31,7 +31,6 @@ const withNotification = params => {
       }
 
       onCloseNotification(id) {
-        console.log("---onclose notiricaiton is fired", id);
         this.setState(({ notifications }) => ({
           notifications: notifications.filter(
             notification => notification.id !== id
