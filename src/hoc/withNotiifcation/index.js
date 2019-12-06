@@ -13,21 +13,30 @@ const withNotification = params => {
         this.onCloseNotification = this.onCloseNotification.bind(this);
       }
 
-      addNotification(message) {
-        const { notifications } = this.state;
+      addNotification(payload) {
+        const notificationId = +new Date();
+        if (typeof payload.timeInterval == "number") {
+          console.log(payload.timeInterval);
+          setTimeout(() => {
+            this.onCloseNotification(notificationId);
+          }, payload.timeInterval);
+        }
+
         this.setState(({ notifications }) => ({
-          notifications: notifications.concat({ ...message, id: +new Date() })
+          notifications: notifications.concat({
+            ...payload,
+            id: notificationId
+          })
         }));
       }
 
       onCloseNotification(id) {
-        const { notifications } = this.state;
-
-        this.setState({
+        console.log("---onclose notiricaiton is fired", id);
+        this.setState(({ notifications }) => ({
           notifications: notifications.filter(
             notification => notification.id !== id
           )
-        });
+        }));
       }
 
       render() {
@@ -41,7 +50,7 @@ const withNotification = params => {
             <div className="notification-container">
               {notifications.map(({ message, type, id }) => {
                 return (
-                  <div className="notification">
+                  <div className="notification" key={id}>
                     <button
                       onClick={() => {
                         this.onCloseNotification(id);

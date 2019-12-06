@@ -11,7 +11,11 @@ class Home extends Component {
       <div className="home">
         <button
           onClick={() =>
-            this.props.addNotification({ message: "My message", type: "warn" })
+            this.props.addNotification({
+              message: "My message",
+              type: "warn",
+              timeInterval: 1000
+            })
           }
         >
           Show Notification
