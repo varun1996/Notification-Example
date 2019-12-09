@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import withNotificationConsumer from "../../hoc/withNotiifcation/withNotificationConsumer";
+
 import "./home.css";
 
 class Home extends Component {
   constructor(props) {
     super(props);
   }
-
   render() {
     return (
       <div className="home">
@@ -25,4 +26,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default withNotificationConsumer(Home);

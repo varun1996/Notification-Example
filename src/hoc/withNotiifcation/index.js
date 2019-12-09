@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Notification from "./Notification";
+import { NotificationContext } from './notificationContext'
 import "./withNotification.css";
 
 const withNotification = (NotificationComponent = Notification) => {
@@ -48,10 +49,16 @@ const withNotification = (NotificationComponent = Notification) => {
         const { notifications } = this.state;
         return (
           <>
-            <WrappedComponent
-              {...this.props}
-              addNotification={this.addNotification}
-            />
+            <NotificationContext.Provider
+              value={{
+                addNotification: this.addNotification
+              }}
+            >
+              <WrappedComponent
+                {...this.props}
+                addNotification={this.addNotification}
+              />
+            </NotificationContext.Provider>
             <div className="notification-container">
               {notifications.map(({ message, type, id }) => {
                 return (
@@ -74,5 +81,6 @@ const withNotification = (NotificationComponent = Notification) => {
     };
   };
 };
+
 
 export default withNotification;

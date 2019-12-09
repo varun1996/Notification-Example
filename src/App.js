@@ -4,8 +4,8 @@ import "./App.css";
 import Home from "./screens/home";
 import withNotification from "./hoc/withNotiifcation";
 
-function App(props) {
-  return <Home {...props} />;
+function App() {
+  return <Home />;
 }
 
 export default withNotification()(App);
